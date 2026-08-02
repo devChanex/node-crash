@@ -53,26 +53,7 @@
                                                     <hr>
 
                                                     <div
-                                                        class="d-flex justify-content-between align-items-center flex-wrap gap-2">
-
-                                                        <div class="d-flex flex-wrap gap-2">
-
-                                                            <input type="url" name="photo"
-                                                                class="form-control form-control-sm"
-                                                                placeholder="Photo URL (optional)"
-                                                                style="width: 220px;">
-
-                                                            <input type="url" name="video"
-                                                                class="form-control form-control-sm"
-                                                                placeholder="Video URL (optional)"
-                                                                style="width: 220px;">
-
-                                                            <input type="url" name="attachment"
-                                                                class="form-control form-control-sm"
-                                                                placeholder="Attachment URL (optional)"
-                                                                style="width: 220px;">
-
-                                                        </div>
+                                                        class="d-flex justify-content-end align-items-center flex-wrap gap-2">
 
                                                         <button type="submit" class="btn btn-primary px-4">
 
@@ -93,89 +74,284 @@
                                         <% function getYouTubeEmbedUrl(url) { if (!url) return '' ; const
                                             normalizedUrl=url.trim(); const
                                             match=normalizedUrl.match(/(?:youtube\.com\/(?:watch\?v=|embed\/|shorts\/|live\/)|youtu\.be\/)([a-zA-Z0-9_-]{11})/i);
-                                            return match ? `https://www.youtube.com/embed/${match[1]}` : '' ; } %>
+                                            return match ? `https://www.youtube.com/embed/${match[1]}` : '' ; } function
+                                            isLikelyPhotoUrl(url) { const normalizedUrl=url.toLowerCase(); return
+                                            /\.(jpg|jpeg|png|gif|webp|svg|bmp|ico)(\?.*)?$/i.test(url) ||
+                                            /(images?|img|photo|photography|avatar)/i.test(normalizedUrl) ||
+                                            /(encrypted-tbn|i\.ibb|imgur|gstatic|googleusercontent|cdn\d*\.|media\.)/i.test(normalizedUrl);
+                                            } function isLikelyVideoUrl(url) { const normalizedUrl=url.toLowerCase();
+                                            return /\.(mp4|webm|ogg|mov|m4v|m3u8)(\?.*)?$/i.test(url) ||
+                                            /(video|videos|movie|clip)/i.test(normalizedUrl); } function
+                                            extractMediaItems(text, fallbackPhoto='' , fallbackVideo='' ) { const
+                                            items=[]; if (fallbackPhoto) { items.push({ type: 'image' , url:
+                                            fallbackPhoto }); } if (fallbackVideo) { const
+                                            youtubeId=fallbackVideo.match(/(?:youtube\.com\/(?:watch\?v=|embed\/|shorts\/|live\/)|youtu\.be\/)([a-zA-Z0-9_-]{11})/i);
+                                            items.push({ type: youtubeId ? 'youtube' : 'video' , url: fallbackVideo });
+                                            } if (!text) { return items; } const
+                                            urls=[...text.matchAll(/https?:\/\/[^\s<>()]+/gi)].map(match =>
+                                            match[0].replace(/[),.;]+$/, ''));
+                                            const uniqueUrls = [...new Set([...urls, ...(fallbackPhoto ? [fallbackPhoto]
+                                            : []), ...(fallbackVideo ? [fallbackVideo] : [])])];
 
-                                            <% posts.forEach(post=> { %>
-                                                <div class="card shadow-sm mb-3">
-                                                    <div class="card-body">
-                                                        <div class="d-flex align-items-center mb-3">
-                                                            <img src="https://i.pravatar.cc/40?img=12"
-                                                                class="rounded-circle me-3" width="40" height="40">
-                                                            <div>
-                                                                <strong>
-                                                                    <%= post.author %>
-                                                                </strong>
-                                                                <div class="text-secondary small">
-                                                                    <%= new Date(post.createdAt).toLocaleString() %>
+                                            const discoveredItems = uniqueUrls.flatMap((url) => {
+                                            const youtubeId =
+                                            url.match(/(?:youtube\.com\/(?:watch\?v=|embed\/|shorts\/|live\/)|youtu\.be\/)([a-zA-Z0-9_-]{11})/i);
+                                            if (youtubeId) return [{ type: 'youtube', url }];
+                                            if (isLikelyPhotoUrl(url)) return [{ type: 'image', url }];
+                                            if (isLikelyVideoUrl(url)) return [{ type: 'video', url }];
+                                            return [];
+                                            });
+
+                                            return [...items, ...discoveredItems].filter((item, index, array) => index
+                                            === array.findIndex((entry) => entry.url === item.url));
+                                            }
+
+                                            function getVisibleContent(text) {
+                                            return text ? text.replace(/https?:\/\/[^\s<>()]+/gi, '').trim() : '';
+                                                }
+                                                %>
+
+                                                <% posts.forEach(post=> { %>
+                                                    <div class="card shadow-sm mb-3">
+                                                        <div class="card-body">
+                                                            <div class="d-flex align-items-center mb-3">
+                                                                <img src="https://i.pravatar.cc/40?img=12"
+                                                                    class="rounded-circle me-3" width="40" height="40">
+                                                                <div>
+                                                                    <strong>
+                                                                        <%= post.author %>
+                                                                    </strong>
+                                                                    <div class="text-secondary small">
+                                                                        <%= new Date(post.createdAt).toLocaleString() %>
+                                                                    </div>
                                                                 </div>
                                                             </div>
-                                                        </div>
-                                                        <p class="mb-0">
-                                                            <%= post.content %>
-                                                        </p>
+                                                            <% const visibleContent=post.content ?
+                                                                post.content.replace(/https?:\/\/[^\s<>()]+/gi,
+                                                                '').trim() :
+                                                                ''; %>
+                                                                <p class="mb-0">
+                                                                    <%= visibleContent %>
+                                                                </p>
 
-                                                        <% if (post.photo) { %>
-                                                            <div class="mt-3 rounded overflow-hidden bg-light d-flex justify-content-center align-items-center"
-                                                                style="max-height: 420px;">
-                                                                <img src="<%= post.photo %>" alt="Post photo"
-                                                                    style="max-width: 100%; max-height: 420px; width: auto; height: auto; object-fit: contain; display: block;">
-                                                            </div>
-                                                            <% } %>
+                                                                <% const mediaItems=extractMediaItems(post.content,
+                                                                    post.photo, post.video); %>
 
-                                                                <% const youtubeEmbedUrl=getYouTubeEmbedUrl(post.video);
-                                                                    %>
-                                                                    <% if (youtubeEmbedUrl) { %>
-                                                                        <div class="mt-3 rounded overflow-hidden">
-                                                                            <div class="ratio ratio-16x9">
-                                                                                <iframe
-                                                                                    src="<%= youtubeEmbedUrl %>?rel=0"
-                                                                                    title="YouTube video"
-                                                                                    allowfullscreen loading="lazy"
-                                                                                    referrerpolicy="strict-origin-when-cross-origin"
-                                                                                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"></iframe>
-                                                                            </div>
-                                                                        </div>
-                                                                        <% } else if (post.video) { %>
-                                                                            <div class="mt-3">
-                                                                                <video class="w-100 rounded" controls>
-                                                                                    <source src="<%= post.video %>">
-                                                                                </video>
-                                                                            </div>
-                                                                            <% } %>
-
-                                                                                <% if (post.attachment) { %>
-                                                                                    <div class="mt-3">
-                                                                                        <a href="<%= post.attachment %>"
-                                                                                            target="_blank"
-                                                                                            class="btn btn-outline-primary btn-sm">
-                                                                                            <i
-                                                                                                class="bi bi-paperclip me-2"></i>
-                                                                                            Open attachment
-                                                                                        </a>
+                                                                    <% if (mediaItems.length===1) { %>
+                                                                        <% const item=mediaItems[0]; %>
+                                                                            <% if (item.type==='image' ) { %>
+                                                                                <div class="mt-3 rounded overflow-hidden bg-light d-flex justify-content-center align-items-center"
+                                                                                    style="max-height: 420px;">
+                                                                                    <img src="<%= item.url %>"
+                                                                                        alt="Post photo"
+                                                                                        style="max-width: 100%; max-height: 420px; width: auto; height: auto; object-fit: contain; display: block;">
+                                                                                </div>
+                                                                                <% } else if (item.type==='youtube' ) {
+                                                                                    %>
+                                                                                    <div
+                                                                                        class="mt-3 rounded overflow-hidden">
+                                                                                        <div class="ratio ratio-16x9">
+                                                                                            <iframe
+                                                                                                src="<%= getYouTubeEmbedUrl(item.url) %>?rel=0"
+                                                                                                title="YouTube video"
+                                                                                                allowfullscreen
+                                                                                                loading="lazy"
+                                                                                                referrerpolicy="strict-origin-when-cross-origin"
+                                                                                                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"></iframe>
+                                                                                        </div>
                                                                                     </div>
-                                                                                    <% } %>
+                                                                                    <% } else { %>
+                                                                                        <div class="mt-3">
+                                                                                            <video class="w-100 rounded"
+                                                                                                controls>
+                                                                                                <source
+                                                                                                    src="<%= item.url %>">
+                                                                                            </video>
+                                                                                        </div>
+                                                                                        <% } %>
+                                                                                            <% } else if
+                                                                                                (mediaItems.length> 1) {
+                                                                                                %>
+                                                                                                <div class="mt-3">
+                                                                                                    <div
+                                                                                                        class="d-flex flex-wrap gap-2">
+                                                                                                        <% mediaItems.forEach((item,
+                                                                                                            index)=> {
+                                                                                                            %>
+                                                                                                            <button
+                                                                                                                type="button"
+                                                                                                                class="btn btn-link p-0 border-0 rounded overflow-hidden"
+                                                                                                                data-bs-toggle="modal"
+                                                                                                                data-bs-target="#mediaModal-<%= post._id %>"
+                                                                                                                onclick="const modalEl=document.getElementById('mediaModal-<%= post._id %>'); const carouselEl=modalEl.querySelector('.carousel'); const carousel=bootstrap.Carousel.getOrCreateInstance(carouselEl); carousel.to(<%= index %>);">
+                                                                                                                <% if
+                                                                                                                    (item.type==='image'
+                                                                                                                    ) {
+                                                                                                                    %>
+                                                                                                                    <img src="<%= item.url %>"
+                                                                                                                        alt="Post thumbnail"
+                                                                                                                        style="width: 110px; height: 110px; object-fit: cover; border-radius: 10px;">
+                                                                                                                    <% } else
+                                                                                                                        if
+                                                                                                                        (item.type==='youtube'
+                                                                                                                        )
+                                                                                                                        {
+                                                                                                                        %>
+                                                                                                                        <div class="position-relative d-flex align-items-center justify-content-center"
+                                                                                                                            style="width: 110px; height: 110px; background: #0f172a; border-radius: 10px;">
+                                                                                                                            <i
+                                                                                                                                class="bi bi-play-circle-fill text-white fs-2"></i>
+                                                                                                                            <span
+                                                                                                                                class="position-absolute bottom-0 start-0 end-0 small text-center text-white pb-1">YouTube</span>
+                                                                                                                        </div>
+                                                                                                                        <% } else
+                                                                                                                            {
+                                                                                                                            %>
+                                                                                                                            <div class="position-relative d-flex align-items-center justify-content-center"
+                                                                                                                                style="width: 110px; height: 110px; background: #111827; border-radius: 10px;">
+                                                                                                                                <i
+                                                                                                                                    class="bi bi-film text-white fs-2"></i>
+                                                                                                                                <span
+                                                                                                                                    class="position-absolute bottom-0 start-0 end-0 small text-center text-white pb-1">Video</span>
+                                                                                                                            </div>
+                                                                                                                            <% }
+                                                                                                                                %>
+                                                                                                            </button>
+                                                                                                            <% }) %>
+                                                                                                    </div>
+                                                                                                </div>
+                                                                                                <% } %>
 
-                                                                                        <% if (user && user.email &&
-                                                                                            post.author===user.email.split('@')[0])
-                                                                                            { %>
-                                                                                            <div
-                                                                                                class="mt-3 d-flex justify-content-end">
-                                                                                                <form
-                                                                                                    action="/blogs/delete/<%= post._id %>"
-                                                                                                    method="POST">
-                                                                                                    <button
-                                                                                                        type="submit"
-                                                                                                        class="btn btn-outline-danger btn-sm">
-                                                                                                        <i
-                                                                                                            class="bi bi-trash me-2"></i>
-                                                                                                        Delete
-                                                                                                    </button>
-                                                                                                </form>
-                                                                                            </div>
-                                                                                            <% } %>
+                                                                                                    <div class="modal fade"
+                                                                                                        id="mediaModal-<%= post._id %>"
+                                                                                                        tabindex="-1"
+                                                                                                        aria-hidden="true">
+                                                                                                        <div
+                                                                                                            class="modal-dialog modal-xl modal-dialog-centered">
+                                                                                                            <div
+                                                                                                                class="modal-content bg-dark text-white border-0">
+                                                                                                                <div
+                                                                                                                    class="modal-header border-0">
+                                                                                                                    <h5
+                                                                                                                        class="modal-title">
+                                                                                                                        Media
+                                                                                                                        preview
+                                                                                                                    </h5>
+                                                                                                                    <button
+                                                                                                                        type="button"
+                                                                                                                        class="btn-close btn-close-white"
+                                                                                                                        data-bs-dismiss="modal"
+                                                                                                                        aria-label="Close"></button>
+                                                                                                                </div>
+                                                                                                                <div
+                                                                                                                    class="modal-body p-0">
+                                                                                                                    <div id="mediaCarousel-<%= post._id %>"
+                                                                                                                        class="carousel slide"
+                                                                                                                        data-bs-ride="false">
+                                                                                                                        <div
+                                                                                                                            class="carousel-inner">
+                                                                                                                            <% mediaItems.forEach((item,
+                                                                                                                                index)=>
+                                                                                                                                {
+                                                                                                                                %>
+                                                                                                                                <div
+                                                                                                                                    class="carousel-item <%= index===0 ? 'active' : '' %>">
+                                                                                                                                    <% if
+                                                                                                                                        (item.type==='image'
+                                                                                                                                        )
+                                                                                                                                        {
+                                                                                                                                        %>
+                                                                                                                                        <div
+                                                                                                                                            class="d-flex justify-content-center align-items-center p-3">
+                                                                                                                                            <img src="<%= item.url %>"
+                                                                                                                                                alt="Post media"
+                                                                                                                                                class="img-fluid rounded"
+                                                                                                                                                style="max-height: 70vh;">
+                                                                                                                                        </div>
+                                                                                                                                        <% } else
+                                                                                                                                            if
+                                                                                                                                            (item.type==='youtube'
+                                                                                                                                            )
+                                                                                                                                            {
+                                                                                                                                            %>
+                                                                                                                                            <div
+                                                                                                                                                class="ratio ratio-16x9">
+                                                                                                                                                <iframe
+                                                                                                                                                    src="<%= getYouTubeEmbedUrl(item.url) %>?rel=0"
+                                                                                                                                                    title="YouTube video"
+                                                                                                                                                    allowfullscreen
+                                                                                                                                                    loading="lazy"
+                                                                                                                                                    referrerpolicy="strict-origin-when-cross-origin"
+                                                                                                                                                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"></iframe>
+                                                                                                                                            </div>
+                                                                                                                                            <% } else
+                                                                                                                                                {
+                                                                                                                                                %>
+                                                                                                                                                <div
+                                                                                                                                                    class="p-3">
+                                                                                                                                                    <video
+                                                                                                                                                        class="w-100 rounded"
+                                                                                                                                                        controls>
+                                                                                                                                                        <source
+                                                                                                                                                            src="<%= item.url %>">
+                                                                                                                                                    </video>
+                                                                                                                                                </div>
+                                                                                                                                                <% }
+                                                                                                                                                    %>
+                                                                                                                                </div>
+                                                                                                                                <% })
+                                                                                                                                    %>
+                                                                                                                        </div>
+                                                                                                                        <button
+                                                                                                                            class="carousel-control-prev"
+                                                                                                                            type="button"
+                                                                                                                            data-bs-target="#mediaCarousel-<%= post._id %>"
+                                                                                                                            data-bs-slide="prev">
+                                                                                                                            <span
+                                                                                                                                class="carousel-control-prev-icon"
+                                                                                                                                aria-hidden="true"></span>
+                                                                                                                            <span
+                                                                                                                                class="visually-hidden">Previous</span>
+                                                                                                                        </button>
+                                                                                                                        <button
+                                                                                                                            class="carousel-control-next"
+                                                                                                                            type="button"
+                                                                                                                            data-bs-target="#mediaCarousel-<%= post._id %>"
+                                                                                                                            data-bs-slide="next">
+                                                                                                                            <span
+                                                                                                                                class="carousel-control-next-icon"
+                                                                                                                                aria-hidden="true"></span>
+                                                                                                                            <span
+                                                                                                                                class="visually-hidden">Next</span>
+                                                                                                                        </button>
+                                                                                                                    </div>
+                                                                                                                </div>
+                                                                                                            </div>
+                                                                                                        </div>
+                                                                                                    </div>
+
+                                                                                                    <% if (user &&
+                                                                                                        user.email &&
+                                                                                                        post.author===user.email.split('@')[0])
+                                                                                                        { %>
+                                                                                                        <div
+                                                                                                            class="mt-3 d-flex justify-content-end">
+                                                                                                            <form
+                                                                                                                action="/blogs/delete/<%= post._id %>"
+                                                                                                                method="POST">
+                                                                                                                <button
+                                                                                                                    type="submit"
+                                                                                                                    class="btn btn-outline-danger btn-sm">
+                                                                                                                    <i
+                                                                                                                        class="bi bi-trash me-2"></i>
+                                                                                                                    Delete
+                                                                                                                </button>
+                                                                                                            </form>
+                                                                                                        </div>
+                                                                                                        <% } %>
+                                                        </div>
                                                     </div>
-                                                </div>
-                                                <% }) %>
+                                                    <% }) %>
 
                                     </div>
 

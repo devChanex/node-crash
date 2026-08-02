@@ -18,10 +18,6 @@ const postSchema = new mongoose.Schema({
     video: {
         type: String,
         default: ''
-    },
-    attachment: {
-        type: String,
-        default: ''
     }
 }, {
     timestamps: true

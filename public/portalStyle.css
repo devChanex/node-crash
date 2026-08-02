@@ -437,7 +437,8 @@ footer {
     justify-content: center;
     align-items: center;
 
-    background: white;
+    background: #0b1220;
+    color: #fff;
 
     z-index: 99999;
 
