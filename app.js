@@ -31,6 +31,7 @@ mongoose.connect(dbURI, clientOptions)
 // routes
 app.get('*', checkUser);
 app.use('/blogs', blogRoutes);
+app.get('/', blogRoutes);
 app.get('/trackers', requireAuth, (req, res) => res.render('tracker'));
 app.use(authRoutes);
 app.use((req, res) => {
