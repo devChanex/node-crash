@@ -13,17 +13,17 @@
 
     --info: #06b6d4;
 
-    --body: #f4f7fb;
+    --body: #0b1220;
 
-    --sidebar: #172554;
+    --sidebar: #111827;
 
     --sidebar-hover: #1e3a8a;
 
-    --card: #ffffff;
+    --card: #111827;
 
-    --text: #1f2937;
+    --text: #e5e7eb;
 
-    --border: #e5e7eb;
+    --border: rgba(148, 163, 184, .2);
 
     --navbar-height: 70px;
 
@@ -44,7 +44,9 @@ body {
 
     margin: 0;
 
-    background: var(--body);
+    background:
+        radial-gradient(circle at top, rgba(37, 99, 235, .18), transparent 28%),
+        var(--body);
 
     font-family: 'Inter', sans-serif;
 
@@ -211,7 +213,7 @@ body.sidebar-open {
 
     height: var(--navbar-height);
 
-    background: white;
+    background: #0f172a;
 
     border-bottom: 1px solid var(--border);
 
@@ -249,7 +251,7 @@ body.sidebar-open {
 
 footer {
 
-    background: white;
+    background: #0f172a;
 
     border-top: 1px solid var(--border);
 
@@ -257,7 +259,7 @@ footer {
 
     font-size: .9rem;
 
-    color: #6b7280;
+    color: #94a3b8;
 
 }
 
@@ -267,11 +269,15 @@ footer {
 
 .card {
 
-    border: none;
+    border: 1px solid rgba(148, 163, 184, .15);
 
     border-radius: 16px;
 
-    box-shadow: 0 5px 20px rgba(0, 0, 0, .05);
+    background: var(--card);
+
+    color: var(--text);
+
+    box-shadow: 0 10px 30px rgba(0, 0, 0, .25);
 
 }
 
@@ -294,7 +300,7 @@ footer {
 
     inset: 0;
 
-    background: white;
+    background: #0b1220;
 
     display: flex;
 
@@ -377,7 +383,11 @@ footer {
 
     border-radius: 50px;
 
-    background: #f8fafc;
+    background: #0b1220;
+
+    color: var(--text);
+
+    border-color: var(--border);
 
 }
 
