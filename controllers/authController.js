@@ -1,5 +1,8 @@
 const User = require("../models/User");
 const jwt = require('jsonwebtoken');
+require('dotenv').config();
+
+const JWT_SECRET = process.env.JWT_SECRET || 'net ninja secret';
 
 // handle errors
 const handleErrors = (err) => {
@@ -38,7 +41,7 @@ const handleErrors = (err) => {
 // create json web token
 const maxAge = 3 * 24 * 60 * 60;
 const createToken = (id) => {
-  return jwt.sign({ id }, 'net ninja secret', {
+  return jwt.sign({ id }, JWT_SECRET, {
     expiresIn: maxAge
   });
 };
@@ -61,11 +64,11 @@ module.exports.signup_post = async (req, res) => {
     res.cookie('jwt', token, { httpOnly: true, maxAge: maxAge * 1000 });
     res.status(201).json({ user: user._id });
   }
-  catch(err) {
+  catch (err) {
     const errors = handleErrors(err);
     res.status(400).json({ errors });
   }
- 
+
 }
 
 module.exports.login_post = async (req, res) => {
@@ -76,7 +79,7 @@ module.exports.login_post = async (req, res) => {
     const token = createToken(user._id);
     res.cookie('jwt', token, { httpOnly: true, maxAge: maxAge * 1000 });
     res.status(200).json({ user: user._id });
-  } 
+  }
   catch (err) {
     const errors = handleErrors(err);
     res.status(400).json({ errors });
