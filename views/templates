@@ -1,0 +1,28 @@
+<%- include('partials/header'); -%>
+
+
+
+    <%- include('partials/loader'); -%>
+
+
+        <div class="wrapper">
+
+
+            <%- include('partials/sidebar'); -%>
+
+
+                <main class="main" id="main">
+
+                    <%- include('partials/topbar'); -%>
+
+                        <div class="content">
+
+
+
+
+
+
+                        </div>
+
+
+                        <%- include('partials/footer'); -%>

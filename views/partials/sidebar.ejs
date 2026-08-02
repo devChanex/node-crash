@@ -1,0 +1,121 @@
+<aside class="sidebar" id="sidebar">
+
+
+
+    <div class="d-flex flex-column h-100">
+
+
+
+        <div class="border-bottom border-light border-opacity-10" style="display: none;">
+
+            <div class="d-flex align-items-center justify-content-between p-3">
+
+
+
+                <button class="btn btn-sm btn-outline-light border-0" id="sidebarToggle">
+
+                    <i class="bi bi-list fs-4"></i>
+
+                </button>
+
+            </div>
+
+        </div>
+
+        <!-- ==========================================
+         USER
+    =========================================== -->
+
+        <div class="px-3 py-4 border-bottom border-light border-opacity-10">
+
+            <div class="d-flex align-items-center sidebar-user">
+
+                <img src="https://i.pravatar.cc/100?img=12" class="rounded-circle" width="50" height="50">
+
+                <div class="ms-3 menu-text sidebar-user-meta">
+
+                    <div class="fw-semibold">
+
+                        <%= user.email.split('@')[0] %>
+
+                    </div>
+
+                    <small class="text-white-50">
+
+                        Administrator
+
+                    </small>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <!-- ==========================================
+         MENU
+    =========================================== -->
+
+        <div class="flex-grow-1 overflow-auto py-3">
+
+            <!-- MAIN -->
+
+
+            <ul class="nav flex-column">
+
+                <li class="nav-item">
+
+                    <a href="/" class="nav-link active d-flex align-items-center text-white py-3 px-4">
+
+                        <i class="bi bi-postcard-fill fs-5"></i>
+
+                        <span class="menu-text ms-3">
+
+                            Blogs
+
+                        </span>
+
+                    </a>
+
+                </li>
+
+                <li>
+
+                    <a href="/trackers" class="nav-link text-white py-3 px-4 d-flex align-items-center">
+
+                        <i class="bi bi-table fs-5"></i>
+
+                        <span class="menu-text ms-3">
+
+                            Trackers
+
+                        </span>
+
+                    </a>
+
+                </li>
+            </ul>
+
+
+
+
+        </div>
+
+
+        <div class="border-top border-light border-opacity-10 p-3">
+            <a href="/logout" class="btn btn-primary w-100">
+
+                <i class="bi bi-box-arrow-right me-2"></i>
+
+                <span class="menu-text sidebar-footer-text">
+
+                    Logout
+
+                </span>
+            </a>
+
+        </div>
+
+    </div>
+
+</aside>

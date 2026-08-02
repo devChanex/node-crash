@@ -1,0 +1,441 @@
+:root {
+
+    --sidebar-width: 270px;
+    --sidebar-mini: 82px;
+
+    --primary: #2563eb;
+
+    --success: #10b981;
+
+    --warning: #f59e0b;
+
+    --danger: #ef4444;
+
+    --info: #06b6d4;
+
+    --body: #f4f7fb;
+
+    --sidebar: #172554;
+
+    --sidebar-hover: #1e3a8a;
+
+    --card: #ffffff;
+
+    --text: #1f2937;
+
+    --border: #e5e7eb;
+
+    --navbar-height: 70px;
+
+    --transition: .25s;
+}
+
+* {
+    box-sizing: border-box;
+}
+
+html,
+body {
+
+    height: 100%;
+}
+
+body {
+
+    margin: 0;
+
+    background: var(--body);
+
+    font-family: 'Inter', sans-serif;
+
+    color: var(--text);
+
+    overflow-x: hidden;
+}
+
+a {
+
+    text-decoration: none;
+}
+
+ul {
+
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+.wrapper {
+
+    display: flex;
+
+    min-height: 100vh;
+}
+
+body.sidebar-open {
+
+    overflow: hidden;
+}
+
+.sidebar-backdrop {
+
+    position: fixed;
+
+    inset: 0;
+
+    background: rgba(15, 23, 42, .45);
+
+    opacity: 0;
+
+    pointer-events: none;
+
+    transition: var(--transition);
+
+    z-index: 1035;
+}
+
+.sidebar-backdrop.show {
+
+    opacity: 1;
+
+    pointer-events: auto;
+}
+
+/* ===========================================================
+            SIDEBAR
+        ============================================================ */
+
+.sidebar {
+
+    width: var(--sidebar-width);
+
+    background: var(--sidebar);
+
+    color: #fff;
+
+    position: fixed;
+
+    top: 0;
+
+    left: 0;
+
+    bottom: 0;
+
+    transition: width var(--transition) ease, left var(--transition) ease;
+
+    z-index: 1040;
+
+    display: flex;
+
+    flex-direction: column;
+
+    overflow: hidden;
+
+    box-shadow: 8px 0 25px rgba(0, 0, 0, .08);
+
+}
+
+.sidebar.collapsed {
+
+    width: var(--sidebar-mini);
+
+}
+
+.sidebar.collapsed .menu-text,
+
+.sidebar.collapsed .menu-title,
+
+.sidebar.collapsed .brand-name,
+
+.sidebar.collapsed .sidebar-user-meta,
+
+.sidebar.collapsed .sidebar-footer-text {
+
+    display: none;
+
+}
+
+.sidebar.collapsed .nav-link {
+
+    justify-content: center;
+
+    padding-left: 0 !important;
+
+    padding-right: 0 !important;
+
+}
+
+.sidebar.collapsed .sidebar-user {
+
+    justify-content: center;
+
+}
+
+.sidebar.collapsed .sidebar-user img {
+
+    margin-right: 0;
+
+}
+
+/* ===========================================================
+            MAIN
+        ============================================================ */
+
+.main {
+
+    margin-left: var(--sidebar-width);
+
+    width: 100%;
+
+    display: flex;
+
+    flex-direction: column;
+
+    transition: margin-left var(--transition) ease;
+
+    min-height: 100vh;
+
+}
+
+.main.expanded {
+
+    margin-left: var(--sidebar-mini);
+
+}
+
+/* ===========================================================
+            NAVBAR
+        ============================================================ */
+
+.topbar {
+
+    height: var(--navbar-height);
+
+    background: white;
+
+    border-bottom: 1px solid var(--border);
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: space-between;
+
+    padding: 0 25px;
+
+    position: sticky;
+
+    top: 0;
+
+    z-index: 1030;
+
+}
+
+/* ===========================================================
+            PAGE CONTENT
+        ============================================================ */
+
+.content {
+
+    flex: 1;
+
+    padding: 30px;
+
+}
+
+/* ===========================================================
+            FOOTER
+        ============================================================ */
+
+footer {
+
+    background: white;
+
+    border-top: 1px solid var(--border);
+
+    padding: 18px 30px;
+
+    font-size: .9rem;
+
+    color: #6b7280;
+
+}
+
+/* ===========================================================
+            CARDS
+        ============================================================ */
+
+.card {
+
+    border: none;
+
+    border-radius: 16px;
+
+    box-shadow: 0 5px 20px rgba(0, 0, 0, .05);
+
+}
+
+/* ===========================================================
+            BUTTONS
+        ============================================================ */
+
+.btn {
+
+    border-radius: 10px;
+}
+
+/* ===========================================================
+            LOADING
+        ============================================================ */
+
+#loading {
+
+    position: fixed;
+
+    inset: 0;
+
+    background: white;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    z-index: 99999;
+}
+
+/* ===========================================================
+            MOBILE
+        ============================================================ */
+
+@media(max-width:991px) {
+
+    .sidebar {
+
+        left: -100%;
+
+        width: min(82vw, var(--sidebar-width));
+    }
+
+    .sidebar.show {
+
+        left: 0;
+    }
+
+    .sidebar.collapsed {
+
+        width: min(82vw, var(--sidebar-width));
+    }
+
+    .sidebar.collapsed .menu-text,
+    .sidebar.collapsed .menu-title,
+    .sidebar.collapsed .brand-name {
+
+        display: block;
+    }
+
+    .main {
+
+        margin-left: 0;
+    }
+
+}
+
+.sidebar .nav-link {
+    color: rgba(255, 255, 255, .82);
+    transition: .2s;
+    border-left: 3px solid transparent;
+}
+
+.sidebar .nav-link:hover {
+    background: rgba(255, 255, 255, .08);
+    color: #fff;
+    border-left-color: #60a5fa;
+}
+
+.sidebar .nav-link.active {
+    background: rgba(37, 99, 235, .25);
+    border-left-color: #60a5fa;
+    color: #fff;
+}
+
+.sidebar .collapse .nav-link {
+    font-size: .92rem;
+}
+
+.sidebar::-webkit-scrollbar {
+    width: 6px;
+}
+
+.sidebar::-webkit-scrollbar-thumb {
+    background: rgba(255, 255, 255, .15);
+    border-radius: 10px;
+}
+
+.topbar .form-control {
+
+    border-radius: 50px;
+
+    background: #f8fafc;
+
+}
+
+.topbar .btn {
+
+    transition: .2s;
+
+}
+
+.topbar .btn:hover {
+
+    transform: translateY(-2px);
+
+}
+
+.dropdown-menu {
+
+    border-radius: 14px;
+
+}
+
+.dropdown-item {
+
+    padding: .75rem 1rem;
+
+}
+
+.dropdown-item:hover {
+
+    background: #f1f5f9;
+
+}
+
+.breadcrumb {
+
+    font-size: .9rem;
+
+
+}
+
+#loading {
+
+    position: fixed;
+    inset: 0;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    background: white;
+
+    z-index: 99999;
+
+    transition: opacity .4s ease;
+}
+
+#loading.hide {
+
+    opacity: 0;
+    pointer-events: none;
+}

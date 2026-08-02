@@ -1,54 +1,198 @@
-<%- include('partials/header'); -%>
+<%- include('loginPartials/header'); -%>
 
-<form action="/signup">
-  <h2>Sign up</h2>
-  <label for="email">Email</label>
-  <input type="text" name="email" required />
-  <div class="email error"></div>
-  <label for="password">Password</label>
-  <input type="password" name="password" required />
-  <div class="password error"></div>
-  <button>Sign up</button>
-</form>
+    <body>
+        <div class="container py-5">
 
-<%- include('partials/footer'); -%>
+            <div class="row justify-content-center align-items-center min-vh-100">
 
-<script>
-  const form = document.querySelector('form');
-  const emailError = document.querySelector('.email.error');
-  const passwordError = document.querySelector('.password.error');
+                <div class="col-lg-5">
 
-  form.addEventListener('submit', async (e) => {
-    e.preventDefault();
+                    <div class="card portal-card">
 
-    // reset errors
-    emailError.textContent = '';
-    passwordError.textContent = '';
+                        <div class="login-panel p-5">
 
-    // get values
-    const email = form.email.value;
-    const password = form.password.value;
+                            <div class="text-center mb-5">
 
-    try {
-      const res = await fetch('/signup', { 
-        method: 'POST', 
-        body: JSON.stringify({ email, password }),
-        headers: {'Content-Type': 'application/json'}
-      });
-      const data = await res.json();
-      console.log(data);
-      if (data.errors) {
-        emailError.textContent = data.errors.email;
-        passwordError.textContent = data.errors.password;
-      }
-      if (data.user) {
-        location.assign('/');
-      }
+                                <div class="logo mx-auto mb-4">
+                                    RH
+                                </div>
 
-    }
-    catch (err) {
-      console.log(err);
-    }
+                                <h2 class="fw-bold mb-2">
+                                    Create your account
+                                </h2>
 
-  });
-</script>
+                                <p class="text-secondary mb-0">
+                                    Create an account to securely access your portal.
+                                </p>
+
+                            </div>
+
+
+
+                            <form action="/signup">
+
+                                <div class="mb-4">
+
+                                    <label class="form-label">
+                                        User Account
+                                    </label>
+
+                                    <input type="email" class="form-control" placeholder="name@company.com" required
+                                        name="email">
+                                    <div class="email error"></div>
+                                </div>
+
+                                <div class="mb-3">
+
+                                    <label class="form-label">
+                                        Password
+                                    </label>
+
+                                    <div class="input-group">
+
+                                        <input type="password" class="form-control border-end-0" id="signupPassword"
+                                            placeholder="Create a password" required name="password">
+
+                                        <button class="btn btn-outline-secondary border-start-0" type="button"
+                                            id="togglePassword">
+
+                                            <i class="bi bi-eye"></i>
+
+                                        </button>
+
+                                    </div>
+                                    <div class="password error"></div>
+                                </div>
+
+                                <div class="small text-secondary mb-4">
+                                    Password must contain at least <strong>8 characters</strong>.
+                                </div>
+
+                                <div class="d-grid mb-4">
+
+                                    <button class="btn btn-primary py-3">
+
+                                        Create Account
+
+                                    </button>
+
+                                </div>
+
+                            </form>
+
+                            <div class="security p-3 mb-4">
+
+                                <div class="d-flex align-items-center">
+
+                                    <i class="bi bi-shield-lock-fill text-success fs-4 me-3"></i>
+
+                                    <div>
+
+                                        <strong>
+                                            Enterprise-grade Security
+                                        </strong>
+
+                                        <div class="small">
+                                            Your account is protected with 256-bit SSL encryption.
+                                        </div>
+
+                                    </div>
+
+                                </div>
+
+                            </div>
+
+                            <div class="text-center">
+
+                                <span class="text-secondary">
+                                    Already have an account?
+                                </span>
+
+                                <a href="/" class="text-decoration-none fw-semibold">
+                                    Sign In
+                                </a>
+
+                            </div>
+
+                            <hr class="my-4">
+
+                            <div class="d-flex justify-content-center footer-links">
+
+                                <a href="#">Help & Support</a>
+
+
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <script>
+            const password = document.getElementById("signupPassword");
+            const toggle = document.getElementById("togglePassword");
+
+            toggle.addEventListener("click", () => {
+
+                if (password.type === "password") {
+
+                    password.type = "text";
+                    toggle.innerHTML = '<i class="bi bi-eye-slash"></i>';
+
+                } else {
+
+                    password.type = "password";
+                    toggle.innerHTML = '<i class="bi bi-eye"></i>';
+
+                }
+
+            });
+
+            const form = document.querySelector('form');
+            const emailError = document.querySelector('.email.error');
+            const passwordError = document.querySelector('.password.error');
+
+            form.addEventListener('submit', async (e) => {
+                e.preventDefault();
+
+                // reset errors
+                emailError.textContent = '';
+                passwordError.textContent = '';
+
+                // get values
+                const email = form.email.value;
+                const password = form.password.value;
+
+                try {
+                    const res = await fetch('/signup', {
+                        method: 'POST',
+                        body: JSON.stringify({ email, password }),
+                        headers: { 'Content-Type': 'application/json' }
+                    });
+                    const data = await res.json();
+                    console.log(data);
+                    if (data.errors) {
+                        emailError.textContent = data.errors.email;
+                        passwordError.textContent = data.errors.password;
+                    }
+                    if (data.user) {
+                        location.assign('/');
+                    }
+
+                }
+                catch (err) {
+                    console.log(err);
+                }
+
+            });
+        </script>
+
+    </body>
+
+    </html>

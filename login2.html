@@ -1,0 +1,231 @@
+<body>
+
+    <div class="container py-5">
+
+        <div class="row justify-content-center align-items-center min-vh-100">
+
+            <div class="col-xl-11">
+
+                <div class="card portal-card">
+
+                    <div class="row g-0">
+
+                        <!-- HERO -->
+
+                        <div class="col-lg-6 hero-panel d-flex align-items-center">
+
+                            <div class="hero-content p-5">
+                                <h2 class="fw-bold mb-3">
+                                    RocketHub Portal
+                                </h2>
+
+                                <p class="text-secondary fs-5">
+                                    Securely access your projects, invoices, reports, and account information from one
+                                    trusted location.
+                                </p>
+
+                                <div class="illustration">
+
+                                    <div class="device">
+
+                                        <div class="d-flex justify-content-between align-items-center mb-4">
+
+                                            <div>
+
+                                                <h6 class="fw-bold mb-1">
+                                                    Business Dashboard
+                                                </h6>
+
+                                                <small class="text-secondary">
+                                                    Live Overview
+                                                </small>
+
+                                            </div>
+
+                                            <i class="bi bi-shield-lock-fill text-primary fs-3"></i>
+
+                                        </div>
+
+                                        <div class="status"></div>
+                                        <div class="status"></div>
+                                        <div class="status"></div>
+                                        <div class="status"></div>
+
+                                        <hr>
+
+                                        <div class="d-flex justify-content-between">
+
+                                            <div>
+                                                <div class="fw-semibold">Projects</div>
+                                                <div class="text-primary">- Active</div>
+                                            </div>
+
+                                            <div>
+                                                <div class="fw-semibold">Invoices</div>
+                                                <div class="text-success">- Paid</div>
+                                            </div>
+
+                                            <div>
+                                                <div class="fw-semibold">Support</div>
+                                                <div class="text-warning">- Open</div>
+                                            </div>
+
+                                        </div>
+
+                                    </div>
+
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                        <!-- LOGIN -->
+
+                        <div class="col-lg-6 login-panel">
+
+                            <div class="p-5">
+
+                                <div class="text-center mb-4">
+
+                                    <div class="logo mx-auto mb-3">
+                                        RH
+                                    </div>
+
+                                    <h3 class="fw-bold">
+                                        Sign in to your account
+                                    </h3>
+
+                                    <p class="text-secondary">
+                                        Access your dashboard, project updates, and billing.
+                                    </p>
+
+                                </div>
+
+
+
+                                <form>
+
+                                    <div class="mb-3">
+
+                                        <label class="form-label fw-semibold">
+                                            User Account
+                                        </label>
+
+                                        <input type="email" class="form-control" placeholder="name@company.com">
+
+                                    </div>
+
+                                    <div class="mb-3">
+
+                                        <label class="form-label fw-semibold">
+                                            Password
+                                        </label>
+
+                                        <div class="input-group">
+
+                                            <input type="password" class="form-control border-end-0" id="password"
+                                                placeholder="Enter your password">
+
+                                            <button type="button"
+                                                class="btn btn-outline-secondary border-start-0 password-toggle"
+                                                id="togglePassword">
+
+                                                Show
+
+                                            </button>
+
+                                        </div>
+
+                                    </div>
+
+                                    <div class="d-flex justify-content-between align-items-center mb-4">
+
+                                        <div class="form-check">
+
+                                            <input class="form-check-input" type="checkbox" id="remember">
+
+                                            <label class="form-check-label" for="remember">
+
+                                                Remember me
+
+                                            </label>
+
+                                        </div>
+
+                                        <a href="#" class="text-decoration-none">
+                                            Forgot password?
+                                        </a>
+
+                                    </div>
+
+                                    <div class="d-grid">
+
+                                        <button class="btn btn-primary py-3 fw-semibold">
+                                            Access Portal
+                                        </button>
+
+                                    </div>
+
+                                </form>
+
+
+                                <div class="text-center mt-4">
+
+                                    <span class="text-secondary">
+                                        Don't have an account?
+                                    </span>
+
+                                    <a href="#" class="text-decoration-none">
+                                        Create one now
+                                    </a>
+
+                                </div>
+
+                                <hr class="my-4">
+
+                                <div class="d-flex flex-column flex-md-row justify-content-between align-items-center">
+
+                                    <div class="footer-links mb-2 mb-md-0">
+
+                                        <a href="#">Help & Support</a>
+                                    </div>
+
+                                    <small class="text-secondary">
+                                        © 2026 RocketHub
+                                    </small>
+
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <script>
+            const password = document.getElementById("password");
+            const toggle = document.getElementById("togglePassword");
+
+            toggle.addEventListener("click", function () {
+
+                if (password.type === "password") {
+                    password.type = "text";
+                    toggle.textContent = "Hide";
+                } else {
+                    password.type = "password";
+                    toggle.textContent = "Show";
+                }
+
+            });
+        </script>
+
+</body>
+
+</html>
